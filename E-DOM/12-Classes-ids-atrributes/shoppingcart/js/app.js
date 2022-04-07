@@ -2,28 +2,28 @@
 const link = document.querySelector('.link')
 let element;
 // classes
-    // classList
-    element = link.classList
-    element = link.className
+// classList
+element = link.classList
+element = link.className
     // add
-    link.classList.add('new-class')
+link.classList.add('new-class')
     // remove
-    link.classList.remove('link')
+link.classList.remove('link')
 
 // id
-    element = link.id
+element = link.id
     // add
-    link.id = 'link'
+link.id = 'link'
     // remove
-    link.id = ''
+link.id = ''
 
 // attriute function
-    // getAttribute
-    element = link.getAttribute('class')
+// getAttribute
+element = link.getAttribute('class')
     // setAttribute
-    element = link.setAttribute('id', 'newId')
+element = link.setAttribute('id', 'newId')
     // hasAttribute
-    element = link.hasAttribute('target')
+element = link.hasAttribute('target')
 
-    console.log(link)
-    console.log(element)
+console.log(link)
+console.log(element)
