@@ -1,6 +1,8 @@
 // Arrays Method
 let array = [1, 2, 3, 4, 7, 8, 9];
-let array2 = [1, 'hi', {name: 'mamareza'}, [2,3,4,5]]
+let array2 = [1, 'hi', { name: 'mamareza' },
+    [2, 3, 4, 5]
+]
 
 // change Value
 array[4] = 5
@@ -30,9 +32,10 @@ array.shift()
 
 // splice
 // array.splice(0, 2 )
-array.splice(3, 2)
-array.splice(3, 0, 4 , 5)
+let arrayeha = ['js', 'laravel', 1, 6, 9, 8]
+let splice = arrayeha.slice(1, 3)
+    // array.splice(3, 0, 4, 5)
 
 
 console.log(array)
-console.log(log)
+console.log(splice)
