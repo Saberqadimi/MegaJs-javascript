@@ -1,102 +1,147 @@
-//
-/**
- * ابتدا میایم دایو کلی اون محصول رو میگیریم 
- * بعدش فانکشن میسازیم اون دوره یا محصول رو اطلاعاتشو مثل قیمت و اسم و ای دی و 
- * عکس میگیریم و میریزیم داخل آبجکت
- * بعدش میایم یه فانکشن میسازیم اطلاعات اون محصول رو ببریم بریزیم تو سبد خرید
- */
-
-
-
-//variaball
-//create varibale for global course
+//varibals
 const courses = document.querySelector('#courses-list')
 shoppingCartContent = document.querySelector('#cart-content tbody')
-    // eventListeners
-
+clearCart = document.querySelector('#clear-cart')
+    // functions 
 eventListeners()
 
 function eventListeners() {
-
     courses.addEventListener('click', byCourse)
-
+        //remove course
+    shoppingCartContent.addEventListener('click', removeCourse)
+        //clear all data in cart
+    clearCart.addEventListener('click', removeAll)
+        //load all course from localstorage and show in list
+    document.addEventListener('DOMContentLoaded', showCoursesOnload)
 }
 
-
-//function
-//add the course to the cart
+//by course selected
 function byCourse(e) {
     e.preventDefault()
-        //use delegation for access to the course that selected
     if (e.target.classList.contains('add-to-cart')) {
-        //access to the cart div with parentElement
         const course = e.target.parentElement.parentElement
-            //read values
+
         getCourseInfo(course)
     }
 }
 
-//getting the course info that selected by user
 function getCourseInfo(course) {
-    //get info product in cart
     const courseInfo = {
         image: course.querySelector('img').src,
         title: course.querySelector('h4').textContent,
         price: course.querySelector('span').textContent,
         id: course.querySelectorAll('a')[1].getAttribute('data-id')
     }
+
     addToCart(courseInfo)
 }
 
-//add To cart Course selected and show in list
+
 function addToCart(cInfo) {
-    //create li tag
     let row = document.createElement('tr')
     row.innerHTML = `
-    <tr>
     <td>
-    <img src="${cInfo.image}" width="85px">
+    <img width="85px" href="#" src="${cInfo.image}">
     </td>
-    <td>${cInfo.title}</td>
-    <td>${cInfo.price}</td>
-    <td>
-      <a class="remove" data-id="${cInfo.id}" href="#">X</a>
-    </td>
-    </tr>    
+<td>
+  ${cInfo.title}
+</td>
+<td>
+${cInfo.price}
+</td>
+
+<td>
+  <a class="remove" data-id="${cInfo.id}" href="#">
+  X
+  </a>
+</td>
+    
     `
-    let output = shoppingCartContent.appendChild(row)
-    console.log(output)
-    console.log(shoppingCartContent)
+    shoppingCartContent.appendChild(row)
+    saveToLocalStorage(cInfo)
+
+}
+
+function saveToLocalStorage(course) {
+    const courses = getFromStorage()
+    courses.push(course)
+    localStorage.setItem('courses', JSON.stringify(courses))
 }
 
 
+function getFromStorage() {
+    let courses;
+    const getFromLs = localStorage.getItem('courses')
 
+    if (getFromLs) {
+        courses = JSON.parse(getFromLs)
+    } else {
+        courses = []
+    }
+    return courses
+}
+// remove course selected 
+function removeCourse(e) {
+    e.preventDefault()
+    let course, courseId;
+    if (e.target.classList.contains('remove')) {
+        e.target.parentElement.parentElement.remove()
+        course = e.target.parentElement.parentElement
+        courseId = course.querySelector('a').getAttribute('data-id')
+    }
+    removeCourseLS(courseId)
+}
 
+function removeCourseLS(id) {
+    let coursesLS = getFromStorage()
 
+    coursesLS.forEach(function(course, index) {
+        if (course.id === id) {
+            coursesLS.splice(index, 1)
+        }
+    });
 
+    localStorage.setItem('courses', JSON.stringify(coursesLS))
+}
 
+//remove all course in cart
+function removeAll() {
+    while (shoppingCartContent.firstChild) {
+        shoppingCartContent.firstChild.remove()
+    }
+    clearCartLs()
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function clearCartLs() {
+    localStorage.clear()
+}
+//onload allcourse frome local storage
+function showCoursesOnload() {
+    const courses = getFromStorage()
+    courses.forEach(function(cInfo) {
+        let row = document.createElement('tr')
+        row.innerHTML = `
+        <td>
+        <img width="85px" href="#" src="${cInfo.image}">
+        </td>
+    <td>
+      ${cInfo.title}
+    </td>
+    <td>
+    ${cInfo.price}
+    </td>
+    
+    <td>
+      <a class="remove" data-id="${cInfo.id}" href="#">
+      X
+      </a>
+    </td>
+        
+        `
+        shoppingCartContent.appendChild(row)
+    });
+}
 
 
 
