@@ -1,8 +1,10 @@
+//
 //varibals
 const courses = document.querySelector('#courses-list')
 shoppingCartContent = document.querySelector('#cart-content tbody')
 clearCart = document.querySelector('#clear-cart')
-    // functions 
+
+//
 eventListeners()
 
 function eventListeners() {
@@ -15,16 +17,19 @@ function eventListeners() {
     document.addEventListener('DOMContentLoaded', showCoursesOnload)
 }
 
-//by course selected
+
+//
+//1
 function byCourse(e) {
     e.preventDefault()
     if (e.target.classList.contains('add-to-cart')) {
-        const course = e.target.parentElement.parentElement
 
+        const course = e.target.parentElement.parentElement
         getCourseInfo(course)
+
     }
 }
-
+//2
 function getCourseInfo(course) {
     const courseInfo = {
         image: course.querySelector('img').src,
@@ -32,62 +37,76 @@ function getCourseInfo(course) {
         price: course.querySelector('span').textContent,
         id: course.querySelectorAll('a')[1].getAttribute('data-id')
     }
-
     addToCart(courseInfo)
 }
 
-
+//3
 function addToCart(cInfo) {
     let row = document.createElement('tr')
     row.innerHTML = `
     <td>
-    <img width="85px" href="#" src="${cInfo.image}">
+    <img href="#" src="${cInfo.image}" width="85px">
     </td>
-<td>
-  ${cInfo.title}
-</td>
-<td>
-${cInfo.price}
-</td>
-
-<td>
-  <a class="remove" data-id="${cInfo.id}" href="#">
-  X
-  </a>
-</td>
+    <td>${cInfo.title}</td>
+    <td>${cInfo.price}</td>
+    <td>
+    <a class="remove" href="#" data-id="${cInfo.id}">
+    X
+    </a>
+    </td>
     
     `
     shoppingCartContent.appendChild(row)
     saveToLocalStorage(cInfo)
-
 }
 
 function saveToLocalStorage(course) {
     const courses = getFromStorage()
     courses.push(course)
     localStorage.setItem('courses', JSON.stringify(courses))
-}
 
+}
 
 function getFromStorage() {
-    let courses;
+    let course;
     const getFromLs = localStorage.getItem('courses')
-
     if (getFromLs) {
-        courses = JSON.parse(getFromLs)
+        course = JSON.parse(getFromLs)
     } else {
-        courses = []
+        course = []
     }
-    return courses
+    return course
 }
-// remove course selected 
+
+function showCoursesOnload() {
+    const courses = getFromStorage()
+    courses.forEach(function(cInfo) {
+        let row = document.createElement('tr')
+        row.innerHTML = `
+        <td>
+        <img href="#" src="${cInfo.image}" width="85px">
+        </td>
+        <td>${cInfo.title}</td>
+        <td>${cInfo.price}</td>
+        <td>
+        <a class="remove" href="#" data-id="${cInfo.id}">
+        X
+        </a>
+        </td>
+        
+        `
+        shoppingCartContent.appendChild(row)
+    });
+}
+
 function removeCourse(e) {
-    e.preventDefault()
     let course, courseId;
+    e.preventDefault()
     if (e.target.classList.contains('remove')) {
         e.target.parentElement.parentElement.remove()
         course = e.target.parentElement.parentElement
         courseId = course.querySelector('a').getAttribute('data-id')
+
     }
     removeCourseLS(courseId)
 }
@@ -104,10 +123,9 @@ function removeCourseLS(id) {
     localStorage.setItem('courses', JSON.stringify(coursesLS))
 }
 
-//remove all course in cart
-function removeAll() {
-    while (shoppingCartContent.firstChild) {
-        shoppingCartContent.firstChild.remove()
+function removeAll(e) {
+    while (shoppingCartContent.firstElementChild) {
+        shoppingCartContent.firstElementChild.remove()
     }
     clearCartLs()
 
@@ -116,32 +134,22 @@ function removeAll() {
 function clearCartLs() {
     localStorage.clear()
 }
-//onload allcourse frome local storage
-function showCoursesOnload() {
-    const courses = getFromStorage()
-    courses.forEach(function(cInfo) {
-        let row = document.createElement('tr')
-        row.innerHTML = `
-        <td>
-        <img width="85px" href="#" src="${cInfo.image}">
-        </td>
-    <td>
-      ${cInfo.title}
-    </td>
-    <td>
-    ${cInfo.price}
-    </td>
-    
-    <td>
-      <a class="remove" data-id="${cInfo.id}" href="#">
-      X
-      </a>
-    </td>
-        
-        `
-        shoppingCartContent.appendChild(row)
-    });
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

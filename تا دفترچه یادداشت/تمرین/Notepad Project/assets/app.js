@@ -1,6 +1,9 @@
-eventlestiners()
-
+//variables
 const noteList = document.querySelector('#note-list')
+
+
+// eventlestiners 
+eventlestiners()
 
 function eventlestiners() {
 

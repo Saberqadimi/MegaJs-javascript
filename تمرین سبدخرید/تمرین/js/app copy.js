@@ -10,11 +10,12 @@
 
 //variaball
 //create varibale for global course
-const courses = document.querySelector('#courses-list')
-shoppingCartContent = document.querySelector('#cart-content tbody')
-clearCart = document.querySelector('#clear-cart')
-    // eventListeners
+const courses = document.querySelector('#courses-list'),
+    shoppingCartContent = document.querySelector('#cart-content tbody'),
+    clearCart = document.querySelector('#clear-cart')
 
+
+// eventListeners
 eventListeners()
 
 function eventListeners() {
